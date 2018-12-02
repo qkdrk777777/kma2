@@ -15,6 +15,6 @@ The function is to cange downloaded files format
 
 @return
  @examples dir1='D:/dir/data'
- town_new(dir1)
+ town_new(dir1=dir1)
  @export
 }

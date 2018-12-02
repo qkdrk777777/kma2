@@ -7,7 +7,7 @@
 #'
 #'  @return
 #'  @examples dir1='D:/dir/data'
-#'  town_new(dir1)
+#'  town_new(dir1=dir1)
 #'  @export
 town_new=function(dir1){
   t=1;dele=NULL
@@ -47,6 +47,7 @@ regexpr('_',unlist(str_extract_all(gsub('.csv','',list.files(i)),'(\\p{Hangul}.*
     if(nrow(del3)!=1){
       del3=del3[del3[,4]==substr(del2,regexpr('_',del2)+1,nchar(del2)),]}
     if(nrow(del3)!=1){stop('area check')}
+
     write.csv(cbind(del,del3),file=paste0(paste0(i,'(new)'),'/',j))
   }
 }
