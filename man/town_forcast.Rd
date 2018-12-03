@@ -23,6 +23,6 @@ The function is to store the neighborhood forecast data in a designated path.
  for( year in 2008:2018){
   ifelse(year==2008,start_month<-paste0(10),start_month<-'01')
   ifelse(year==2018,end_month<-10,end_month<-12)
-  town_forcast(dir="D:/dir",year=2010,city_index=12,start_month =start_month,end_month = end_month)}
+  town_forcast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
  @export
 }
