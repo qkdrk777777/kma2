@@ -28,15 +28,15 @@ tryCatch(
   {
 
 
-  pJS <- wdman::phantomjs(port = port1)
-  eCaps <- list(
+  pJS <<- wdman::phantomjs(port = port1)
+  eCaps <<- list(
     chromeOptions = list(
       prefs = list("profile.default_content_settings.popups" = port2,
                    "download.prompt_for_download" = FALSE,"download.default_directory" = dir)
     )
   )
-  rD <- rsDriver(extraCapabilities = eCaps)
-  remDr <- rD$client
+  rD <<- rsDriver(extraCapabilities = eCaps)
+  remDr <<- rD$client
   #############
 
   remDr <- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
