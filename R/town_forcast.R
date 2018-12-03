@@ -169,8 +169,11 @@ tryCatch(
 
   rD[['server']]$stop()
   remDr$close()
+  pJS$stop()
   },error=function(e){rD[['server']]$stop()
-    remDr$close()}
+    remDr$close()
+    pJS$stop()
+    }
 )
 }
 # setwd('D:/package/kma2')
