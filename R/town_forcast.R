@@ -24,8 +24,6 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
   };library(RSelenium)
 
   pack2(c('rvest','httr','stringr','RCurl','XML','progress'))
-tryCatch(
-  {
 
 
   pJS <<- wdman::phantomjs(port = port1)
@@ -173,15 +171,7 @@ try(silent = T,{
   rD[['server']]$stop()
 
   })
-  },error=function(e){
-    try(silent = T,{
-      pJS$stop();
-      remDr$close()
-      rD[['server']]$stop();
-stop(  message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n])))
-    })
-    }
-)
+
 }
 # setwd('D:/package/kma2')
 # devtools::document()
