@@ -25,7 +25,7 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
 
   pack2(c('rvest','httr','stringr','RCurl','XML','progress'))
 
-
+try(silent = T,{
   pJS <<- wdman::phantomjs(port = port1)
   eCaps <<- list(
     chromeOptions = list(
@@ -35,6 +35,7 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
   )
   rD <<- rsDriver(extraCapabilities = eCaps)
   remDr <<- rD$client
+})
   #############
 #
 #   remDr <<- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
