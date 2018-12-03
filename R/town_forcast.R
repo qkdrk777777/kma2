@@ -38,9 +38,9 @@ tryCatch(
   rD <<- rsDriver(extraCapabilities = eCaps)
   remDr <<- rD$client
   #############
-
-  remDr <<- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
-  remDr$open()#run the driver
+#
+#   remDr <<- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
+#   remDr$open()#run the driver
 
   setwd(dir)
   dir.create('data')
@@ -167,12 +167,19 @@ tryCatch(
     }
   }
 
-
-  rD[['server']]$stop()
-  remDr$close()
+try(silent = T,{
   pJS$stop()
-  },error=function(e){rD[['server']]$stop();pJS$stop();remDr$close()
+  remDr$close()
+  rD[['server']]$stop()
 
+  })
+  },error=function(e){
+    try(silent = T,{
+      pJS$stop();
+      remDr$close()
+      rD[['server']]$stop();
+
+    })
     }
 )
 }
