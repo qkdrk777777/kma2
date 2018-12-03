@@ -171,9 +171,8 @@ tryCatch(
   rD[['server']]$stop()
   remDr$close()
   pJS$stop()
-  },error=function(e){rD[['server']]$stop()
-    remDr$close()
-    pJS$stop()
+  },error=function(e){rD[['server']]$stop();pJS$stop();remDr$close()
+
     }
 )
 }
