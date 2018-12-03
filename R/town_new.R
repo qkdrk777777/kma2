@@ -10,17 +10,18 @@
 #'  town_new(dir1=dir1)
 #'  @export
 town_new=function(dir1){
-  t=1;dele=NULL
+  ori=getwd()
+  pack2('stringr');setwd(dir1)
+  dir=list.files()[is.na(str_extract(list.files(),'\\p{Hangul}'))&list.files()%in%setdiff(list.files(),list.files()[grep('\\.|new',list.files())])]
+  for(i in dir){
+    t=1;dele=NULL;
   while(length(dele)!=1){
 dele=area[area[,6]%in%
 substr(unlist(str_extract_all(gsub('.csv','',list.files(i)),'(\\p{Hangul}.*\\p{Hangul})+')),1,
 regexpr('_',unlist(str_extract_all(gsub('.csv','',list.files(i)),'(\\p{Hangul}.*\\p{Hangul})+')))-1)[t],4]
     t=t+1}
 
-  pack2('stringr')
-  setwd(dir1)
-  dir=list.files()[is.na(str_extract(list.files(),'\\p{Hangul}'))&list.files()%in%setdiff(list.files(),list.files()[grep('\\.|new',list.files())])]
-    for(i in dir){
+
   for(j in list.files(i)){
     del=read.csv(paste0(i,'/',j),stringsAsFactors = F)[,-1]
     del$mon<-NA
@@ -50,5 +51,6 @@ regexpr('_',unlist(str_extract_all(gsub('.csv','',list.files(i)),'(\\p{Hangul}.*
 
     write.csv(cbind(del,del3),file=paste0(paste0(i,'(new)'),'/',j))
   }
-}
+  }
+  setwd(org)
 }
