@@ -178,7 +178,7 @@ try(silent = T,{
       pJS$stop();
       remDr$close()
       rD[['server']]$stop();
-
+stop(  message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n])))
     })
     }
 )
