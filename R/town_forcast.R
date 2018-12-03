@@ -13,7 +13,7 @@
 #'  for( year in 2008:2018){
 #'   ifelse(year==2008,start_month<-paste0(10),start_month<-'01')
 #'   ifelse(year==2018,end_month<-10,end_month<-12)
-#'   town_forcast(dir="D:/dir",year=2010,city_index=12,start_month =start_month,end_month = end_month)}
+#'   town_forcast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
 #'  @export
 town_forcast=function(dir,year,city_index,start_month,end_month,
                       id='qkdrk777777@naver.com',pw='whckdwp1!@',port1=4502L,port2=4503L,port3=4567L){
@@ -24,10 +24,6 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
   };library(RSelenium)
 
   pack2(c('rvest','httr','stringr','RCurl','XML','progress'))
-
-
-
-
 
   pJS <- wdman::phantomjs(port = port1)
   eCaps <- list(
@@ -40,11 +36,8 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
   remDr <- rD$client
   #############
 
-  remDr <- remoteDriver(port=port3, browserName = 'chrome')
+  remDr <- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
   remDr$open()#run the driver
-  year=year[1]
-
-
 
   setwd(dir)
   dir.create('data')
