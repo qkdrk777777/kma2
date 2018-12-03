@@ -13,9 +13,9 @@
 #'  for( year in 2008:2018){
 #'   ifelse(year==2008,start_monthpaste0(10),start_month<-'01')
 #'   ifelse(year==2018,end_month<-10,end_month<-12)
-#'   town_forcast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
+#'   town_forecast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
 #'  @export
-town_forcast=function(dir,year,city_index,start_month,end_month,
+town_forecast=function(dir,year,city_index,start_month,end_month,
                       id='qkdrk777777@naver.com',pw='whckdwp1!@',port1=4502L,port2=4503L,port3=4567L){
   if(!require('RSelenium')){
     install_version("binman", version = "0.1.0", repos = "https://cran.uni-muenster.de/")
