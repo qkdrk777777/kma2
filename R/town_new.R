@@ -52,5 +52,5 @@ regexpr('_',unlist(str_extract_all(gsub('.csv','',list.files(i)),'(\\p{Hangul}.*
     write.csv(cbind(del,del3),file=paste0(paste0(i,'(new)'),'/',j))
   }
   }
-  setwd(org)
+  setwd(ori)
 }
