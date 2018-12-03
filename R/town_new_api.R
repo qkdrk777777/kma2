@@ -11,12 +11,9 @@
 #'  ,'&base_time=',paste0(substr(Sys.time()-3600*c(23:0),12,13)[substr(Sys.time()-3600*c(23:0),12,13)%in%c('02','05','08','11','14','17','20','23')],'00')),paste0('&nx=',unique(area[,1:2])[,1],'&ny=',unique(area[,1:2])[,2]))
 #'   api_forecast(cat='T3H',url[1:2])
 #'  @export
-
-
-
 api_forecast=function(cat='T3H',url=url[1:2]){
 data2=lapply(url,function(x){xmlToDataFrame(nodes=getNodeSet(xmlParse(x),'//response/body/items/item'),stringsAsFactors = F)})
-pack2(c('xml2','XML'))
+pack2(c('xml2','XML','plyr'))
 
 data3=NULL
 for(i in 1:length(data2)){
