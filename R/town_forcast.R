@@ -11,7 +11,7 @@
 #'  @return
 #'  @examples citydata2[12]
 #'  for( year in 2008:2018){
-#'   ifelse(year==2008,start_month<-paste0(10),start_month<-'01')
+#'   ifelse(year==2008,start_monthpaste0(10),start_month<-'01')
 #'   ifelse(year==2018,end_month<-10,end_month<-12)
 #'   town_forcast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
 #'  @export
@@ -39,7 +39,7 @@ tryCatch(
   remDr <<- rD$client
   #############
 
-  remDr <- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
+  remDr <<- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
   remDr$open()#run the driver
 
   setwd(dir)
@@ -104,7 +104,7 @@ tryCatch(
       search$clickElement()
       button=NULL
       try(silent = T,{suppressMessages(
-        button<-remDr$findElement(using='css selector',value='button.buttonOK'))
+        button<<-remDr$findElement(using='css selector',value='button.buttonOK'))
       })
       if(!is.null(button)){stop('Check the date range')
         rD[['server']]$stop()
