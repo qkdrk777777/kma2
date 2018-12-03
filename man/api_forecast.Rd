@@ -13,7 +13,8 @@ The function is to cange downloaded files format
 @param category= POP,PTY, REH,SKY,T3H,UUU,VEC,VVV,WSD,WAV
  @param url = api url
  @return
- @examples key='XqCpVL8gGGZXQquN9iXsLtBPS6dwAgnxfWorz1IlKu77R72UPgvE7Lx1J1%2BITprn3%2BoZ0cU3IQ1JnRCpEJ%2BkZw%3D%3D'
+ @examples pack2(c('xml2','XML','plyr'))
+ key='XqCpVL8gGGZXQquN9iXsLtBPS6dwAgnxfWorz1IlKu77R72UPgvE7Lx1J1%2BITprn3%2BoZ0cU3IQ1JnRCpEJ%2BkZw%3D%3D'
  url=paste0('http://newsky2.kma.go.kr/service/SecndSrtpdFrcstInfoService2/ForecastSpaceData?ServiceKey=',
  key,paste0('&base_date=',gsub('-','',substr(Sys.time()-3600*c(23:0),1,10))[substr(Sys.time()-3600*c(23:0),12,13)%in%c('02','05','08','11','14','17','20','23')]
  ,'&base_time=',paste0(substr(Sys.time()-3600*c(23:0),12,13)[substr(Sys.time()-3600*c(23:0),12,13)%in%c('02','05','08','11','14','17','20','23')],'00')),paste0('&nx=',unique(area[,1:2])[,1],'&ny=',unique(area[,1:2])[,2]))
