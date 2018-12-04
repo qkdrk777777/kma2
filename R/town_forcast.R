@@ -124,7 +124,7 @@ try(silent = T,{
 
         for(i in 1:length(down)){
 
-          if(length(gsub('.csv','',list.files())%in%paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))==0){
+          if(sum(gsub('.csv','',list.files())%in%paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))==0){
 
           message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))
           down[[i]]$clickElement()
