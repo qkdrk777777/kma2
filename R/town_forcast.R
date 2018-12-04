@@ -124,7 +124,7 @@ try(silent = T,{
 
         for(i in 1:length(down)){
 
-          if(sum(gsub('.csv','',list.files())%in%paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))==0){
+          if(sum(gsub('.csv','',list.files())%in%paste0(date[i],area_list[i],'_',names(citydata[[city_index]])))==length(down)){
 
           message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))
           down[[i]]$clickElement()
@@ -156,14 +156,14 @@ try(silent = T,{
           write.csv(read.csv(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list))),file=paste0(dir,'/data/',year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n],'.csv'))
           file.remove(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list)))
 
-
+          }else t=t+1
 
           if(t%%10==0){
             Sys.sleep(4)
             page=remDr$findElement(using='class name',value='next_page')
             page$clickElement()
             Sys.sleep(5)}
-}else t=t+1
+
         }
       }
 
@@ -172,8 +172,7 @@ try(silent = T,{
 
 try(silent = T,{
   pJS$stop()
-  remDr$close()
-  rD[['server']]$stop()
+  remDr$close(); rD[['server']]$stop()
 
   })
 
