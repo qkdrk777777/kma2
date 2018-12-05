@@ -140,7 +140,7 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
 
         for(i in 1:length(down)){
 
-          if(sum(gsub('.csv','',list.files())%in%paste0(date[i],area_list[i],'_',names(citydata[[city_index]])))==length(down)){
+          if(sum(gsub('.csv','',list.files())%in%paste0(date[i],area_list[i],'_',names(citydata[[city_index]])))!=length(down)){
 
             message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))
             down[[i]]$clickElement()
