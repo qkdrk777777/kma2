@@ -25,21 +25,21 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
 
   pack2(c('rvest','httr','stringr','RCurl','XML','progress'))
 
-try(silent = T,{
-  pJS <<- wdman::phantomjs(port = port1)
-  eCaps <<- list(
-    chromeOptions = list(
-      prefs = list("profile.default_content_settings.popups" = port2,
-                   "download.prompt_for_download" = FALSE,"download.default_directory" = dir)
+  try(silent = T,{
+    pJS <<- wdman::phantomjs(port = port1)
+    eCaps <<- list(
+      chromeOptions = list(
+        prefs = list("profile.default_content_settings.popups" = port2,
+                     "download.prompt_for_download" = FALSE,"download.default_directory" = dir)
+      )
     )
-  )
-  rD <<- rsDriver(extraCapabilities = eCaps)
-  remDr <<- rD$client
-})
+    rD <<- rsDriver(extraCapabilities = eCaps)
+    remDr <<- rD$client
+  })
   #############
-#
-#   remDr <<- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
-#   remDr$open()#run the driver
+  #
+  #   remDr <<- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
+  #   remDr$open()#run the driver
 
   setwd(dir)
   dir.create('data')
@@ -106,8 +106,7 @@ try(silent = T,{
         button<<-remDr$findElement(using='css selector',value='button.buttonOK'))
       })
       if(!is.null(button)){stop('Check the date range')
-        rD[['server']]$stop()
-        remDr$close()
+        rD[['server']]$stop();remDr$close();  pJS$stop()
       }
       t=0
       n=as.numeric(remDr$findElement(using='class name',value='SEARCH_LIST_COUNT')$getElementText()[[1]])
@@ -126,35 +125,35 @@ try(silent = T,{
 
           if(sum(gsub('.csv','',list.files())%in%paste0(date[i],area_list[i],'_',names(citydata[[city_index]])))==length(down)){
 
-          message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))
-          down[[i]]$clickElement()
-          Sys.sleep(3)
-          error=NULL
-          try(silent = T,{
-            suppressMessages(error<-remDr$findElement(using='css selector',value='button'))
-            # error=remDr$findElement(using='css selector',value='button')
-            error$clickElement()
+            message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))
+            down[[i]]$clickElement()
+            Sys.sleep(3)
+            error=NULL
+            try(silent = T,{
+              suppressMessages(error<-remDr$findElement(using='css selector',value='button'))
+              # error=remDr$findElement(using='css selector',value='button')
+              error$clickElement()
 
-            if(length(error)==1){down=remDr$findElements(using='css selector',value='input.btn.btn-default.DATA_DOWN_BTN')
-            down[[i]]$clickElement()}
-          })
+              if(length(error)==1){down=remDr$findElements(using='css selector',value='input.btn.btn-default.DATA_DOWN_BTN')
+              down[[i]]$clickElement()}
+            })
 
-          t=t+1
-          close=NULL
+            t=t+1
+            close=NULL
 
-          try(silent=T,{suppressMessages(close<-remDr$findElement(using='xpath',value='//*[@name=\"reqstPurposeCd\"]') )
-            close$clickElement()
-            if(length(close)==1){
-              close2=remDr$findElements(using='css selector',value='input.btn.btn-primary')
-              close2[[4]]$mouseMoveToLocation(webElement=close2[[4]])
-              close2[[4]]$sendKeysToElement(list(key='enter'))
-              Sys.sleep(3)
-            }
-          })
+            try(silent=T,{suppressMessages(close<-remDr$findElement(using='xpath',value='//*[@name=\"reqstPurposeCd\"]') )
+              close$clickElement()
+              if(length(close)==1){
+                close2=remDr$findElements(using='css selector',value='input.btn.btn-primary')
+                close2[[4]]$mouseMoveToLocation(webElement=close2[[4]])
+                close2[[4]]$sendKeysToElement(list(key='enter'))
+                Sys.sleep(3)
+              }
+            })
 
 
-          write.csv(read.csv(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list))),file=paste0(dir,'/data/',year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n],'.csv'))
-          file.remove(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list)))
+            write.csv(read.csv(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list))),file=paste0(dir,'/data/',year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n],'.csv'))
+            file.remove(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list)))
 
           }else t=t+1
 
@@ -170,9 +169,9 @@ try(silent = T,{
     }
   }
 
-try(silent = T,{
-  pJS$stop()
-  remDr$close(); rD[['server']]$stop()
+  try(silent = T,{
+    pJS$stop()
+    remDr$close(); rD[['server']]$stop()
 
   })
 
