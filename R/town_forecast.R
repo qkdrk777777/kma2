@@ -9,13 +9,14 @@
 #'  @param City_index is an index to the list of citydata2.For example, if the city_index=1 is download by Seoul data.
 #'
 #'  @return
-#'  @examples citydata2[12]
+#' @examples
+#'  citydata2[12]
 #'  for( year in 2008:2018){
-#'   ifelse(year==2008,start_monthpaste0(10),start_month<-'01')
+#'   ifelse(year==2008,start_month<-paste0(10),start_month<-'01')
 #'   ifelse(year==2018,end_month<-10,end_month<-12)
-#'   town_forcast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
+#'   town_forecast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
 #'  @export
-town_forcast=function(dir,year,city_index,start_month,end_month,
+town_forecast=function(dir,year,city_index,start_month,end_month,
                       id='qkdrk777777@naver.com',pw='whckdwp1!@',port1=4502L,port2=4503L,port3=4567L){
   if(!require('RSelenium')){
     install_version("binman", version = "0.1.0", repos = "https://cran.uni-muenster.de/")
@@ -78,8 +79,24 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
       area$sendKeysToElement(list(key='enter'))
 
       Sys.sleep(2)
+tryCatch({
       area_1=remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch'))
       area_1$clickElement()
+},error=function(e){
+  remDr$navigate(url)
+
+  start=remDr$findElement(using='xpath',value='//*[@id="startDt"]')
+  end=remDr$findElement(using='xpath',value='//*[@id="endDt"]')
+  start$sendKeysToElement(list(paste0(year)))
+  end$sendKeysToElement(list(paste0(year)))
+
+  area=remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN')
+  area$sendKeysToElement(list(key='enter'))
+
+  area_1=remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch'))
+  area_1$clickElement()
+}
+)
       city_n=city_n+1
 
       Sys.sleep(2)
