@@ -14,7 +14,7 @@
 #'  for( year in 2008:2018){
 #'   ifelse(year==2008,start_month<-paste0(10),start_month<-'01')
 #'   ifelse(year==2018,end_month<-10,end_month<-12)
-#'   town_forcast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
+#'   town_forecast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
 #'  @export
 town_forcast=function(dir,year,city_index,start_month,end_month,
                        id='qkdrk777777@naver.com',pw='whckdwp1!@',port1=4502L,port2=4503L,port3=4567L){
@@ -118,6 +118,8 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
       search=remDr$findElement(using='class name',value='addBtn')
       remDr$mouseMoveToLocation(webElement = search)
       search$clickElement()
+      search2=remDr$findElement(using='css selector',value='select#schListCnt.select')
+      search2$sendKeysToElement(list('100'))
       button=NULL
       try(silent = T,{suppressMessages(
         button<<-remDr$findElement(using='css selector',value='button.buttonOK'))
@@ -139,7 +141,8 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
         down=remDr$findElements(using='css selector',value='input.btn.btn-default.DATA_DOWN_BTN')
 
         for(i in 1:length(down)){
-          if(sum(gsub('.csv','',list.files())%in%paste0(date[i],area_list[i],'_',names(citydata[[city_index]])))!=length(down)){
+          if(length(setdiff(paste0(date[i],area_list[i],'_',names(citydata[[city_index]][city_n])),gsub('.csv','',list.files())))!=0){
+            # if(sum(gsub('.csv','',list.files())%in%paste0(date[i],area_list[i],'_',names(citydata[[city_index]])))!=length(down)){
 
             message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))
             down[[i]]$clickElement()
