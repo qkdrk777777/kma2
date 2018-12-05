@@ -106,7 +106,7 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
         button<<-remDr$findElement(using='css selector',value='button.buttonOK'))
       })
       if(!is.null(button)){stop('Check the date range')
-        rD[['server']]$stop();remDr$close();  pJS$stop()
+        remDr$close();pJS$stop();rD[['server']]$stop();
       }
       t=0
       n=as.numeric(remDr$findElement(using='class name',value='SEARCH_LIST_COUNT')$getElementText()[[1]])
@@ -170,8 +170,7 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
   }
 
   try(silent = T,{
-    pJS$stop()
-    remDr$close(); rD[['server']]$stop()
+    pJS$stop();remDr$close(); rD[['server']]$stop()
 
   })
 
