@@ -12,22 +12,19 @@ town_forecast(dir, year, city_index, start_month, end_month,
 The function is to store the neighborhood forecast data in a designated path.
 }
 \details{
-@param year= is must be a year larger than 2008.
+@param year is must be a year larger than 2008.
 
-@param start_month= If start_month is year=2008, start_month has a character value between 10 and 12,
+@param start_month If start_month is year=2008, start_month has a character value between 10 and 12,
  otherwise satr_month can have a character value between 01 and 12.
- @param City_index= is an index to the list of citydata2.For example, if the city_index=1 is download by Seoul data.
+ @param City_index is an index to the list of citydata2.For example, if the city_index=1 is download by Seoul data.
 
 @return
- @examples
- year=2008
-for( year in year:2018){
-  for(city_index in 1:18){
-    ifelse(year==2008,start_month<-paste0(10),start_month<-'01')
-    ifelse(year==2018,end_month<-10,end_month<-12)
-    town_forecast(dir="D:/dir",year=year,city_index=city_index,start_month =start_month,end_month = end_month)
-
 }
-}
+\examples{
+ citydata2[12]
+ for( year in 2008:2018){
+  ifelse(year==2008,start_month<-paste0(10),start_month<-'01')
+  ifelse(year==2018,end_month<-10,end_month<-12)
+  town_forecast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
  @export
 }

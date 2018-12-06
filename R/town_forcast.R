@@ -73,7 +73,9 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
     start$sendKeysToElement(list(paste0(year)))
     end$sendKeysToElement(list(paste0(year)))
     city_n=0
-    #set area
+    Sys.sleep(1)
+
+        #set area
     for(city in citydata[[city_index]]){
       area=remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN')
       area$sendKeysToElement(list(key='enter'))
@@ -92,7 +94,7 @@ town_forcast=function(dir,year,city_index,start_month,end_month,
 
         area=remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN')
         area$sendKeysToElement(list(key='enter'))
-
+Sys.sleep(2)
         area_1=remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch'))
         area_1$clickElement()
       }

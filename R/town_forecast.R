@@ -2,23 +2,19 @@
 #'
 #' The function is to store the neighborhood forecast data in a designated path.
 #'
-#'  @param year= is must be a year larger than 2008.
+#'  @param year is must be a year larger than 2008.
 #'
-#'  @param start_month= If start_month is year=2008, start_month has a character value between 10 and 12,
+#'  @param start_month If start_month is year=2008, start_month has a character value between 10 and 12,
 #'  otherwise satr_month can have a character value between 01 and 12.
-#'  @param City_index= is an index to the list of citydata2.For example, if the city_index=1 is download by Seoul data.
+#'  @param City_index is an index to the list of citydata2.For example, if the city_index=1 is download by Seoul data.
 #'
 #'  @return
-#'  @examples
-#'  year=2008
-#' for( year in year:2018){
-#'   for(city_index in 1:18){
-#'     ifelse(year==2008,start_month<-paste0(10),start_month<-'01')
-#'     ifelse(year==2018,end_month<-10,end_month<-12)
-#'     town_forecast(dir="D:/dir",year=year,city_index=city_index,start_month =start_month,end_month = end_month)
-#'
-#'   }
-#' }
+#' @examples
+#'  citydata2[12]
+#'  for( year in 2008:2018){
+#'   ifelse(year==2008,start_month<-paste0(10),start_month<-'01')
+#'   ifelse(year==2018,end_month<-10,end_month<-12)
+#'   town_forecast(dir="D:/dir",year=year,city_index=12,start_month =start_month,end_month = end_month)}
 #'  @export
 town_forecast=function(dir,year,city_index,start_month,end_month,
                       id='qkdrk777777@naver.com',pw='whckdwp1!@',port1=4502L,port2=4503L,port3=4567L){
@@ -77,30 +73,32 @@ town_forecast=function(dir,year,city_index,start_month,end_month,
     start$sendKeysToElement(list(paste0(year)))
     end$sendKeysToElement(list(paste0(year)))
     city_n=0
+    Sys.sleep(1)
+
     #set area
     for(city in citydata[[city_index]]){
       area=remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN')
       area$sendKeysToElement(list(key='enter'))
 
       Sys.sleep(2)
-tryCatch({
-      area_1=remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch'))
-      area_1$clickElement()
-},error=function(e){
-  remDr$navigate(url)
+      tryCatch({
+        area_1=remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch'))
+        area_1$clickElement()
+      },error=function(e){
+        remDr$navigate(url)
 
-  start=remDr$findElement(using='xpath',value='//*[@id="startDt"]')
-  end=remDr$findElement(using='xpath',value='//*[@id="endDt"]')
-  start$sendKeysToElement(list(paste0(year)))
-  end$sendKeysToElement(list(paste0(year)))
+        start=remDr$findElement(using='xpath',value='//*[@id="startDt"]')
+        end=remDr$findElement(using='xpath',value='//*[@id="endDt"]')
+        start$sendKeysToElement(list(paste0(year)))
+        end$sendKeysToElement(list(paste0(year)))
 
-  area=remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN')
-  area$sendKeysToElement(list(key='enter'))
-
-  area_1=remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch'))
-  area_1$clickElement()
-}
-)
+        area=remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN')
+        area$sendKeysToElement(list(key='enter'))
+        Sys.sleep(2)
+        area_1=remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch'))
+        area_1$clickElement()
+      }
+      )
       city_n=city_n+1
 
       Sys.sleep(2)
@@ -146,7 +144,7 @@ tryCatch({
 
         for(i in 1:length(down)){
           if(length(setdiff(paste0(date[i],area_list[i],'_',names(citydata[[city_index]][city_n])),gsub('.csv','',list.files())))!=0){
-          # if(sum(gsub('.csv','',list.files())%in%paste0(date[i],area_list[i],'_',names(citydata[[city_index]])))!=length(down)){
+            # if(sum(gsub('.csv','',list.files())%in%paste0(date[i],area_list[i],'_',names(citydata[[city_index]])))!=length(down)){
 
             message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))
             down[[i]]$clickElement()
