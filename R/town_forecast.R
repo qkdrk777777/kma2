@@ -26,7 +26,7 @@ town_forecast=function(dir,year,city_index,start_month,end_month,
 
   pack2(c('rvest','httr','stringr','RCurl','XML','progress'))
 
-  try(silent = T,{
+  suppressMessages(try(silent = T,{
     pJS <<- wdman::phantomjs(port = port1)
     eCaps <<- list(
       chromeOptions = list(
@@ -36,7 +36,7 @@ town_forecast=function(dir,year,city_index,start_month,end_month,
     )
     rD <<- rsDriver(extraCapabilities = eCaps)
     remDr <<- rD$client
-  })
+  }))
   #############
   #
   #   remDr <<- remoteDriver(port=port3, browserName = 'chrome',extraCapabilities = eCaps)
@@ -68,60 +68,122 @@ town_forecast=function(dir,year,city_index,start_month,end_month,
     Sys.sleep(2)
     #set preiod of data
 
-    start=remDr$findElement(using='xpath',value='//*[@id="startDt"]')
-    end=remDr$findElement(using='xpath',value='//*[@id="endDt"]')
-    start$sendKeysToElement(list(paste0(year)))
-    end$sendKeysToElement(list(paste0(year)))
+
     city_n=0
     Sys.sleep(1)
 
     #set area
     for(city in citydata[[city_index]]){
-      area=remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN')
-      area$sendKeysToElement(list(key='enter'))
-
-      Sys.sleep(2)
-      tryCatch({
+area=remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN')
+area$sendKeysToElement(list(key='enter'))
+q=1;
+Sys.sleep(2)
+        # try(silent = T,{
+suppressMessages(tryCatch({
         area_1=remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch'))
         area_1$clickElement()
-      },error=function(e){
-        remDr$navigate(url)
+        },error=function(e){
+tryCatch({
+  while(tryCatch(area_1$clickElement(),error=function(e){1})==1){q=q+1
+  if(q%%3==0)remDr$refresh()
+          assign('area',remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN'))
+          area$sendKeysToElement(list(key='enter'))
+          Sys.sleep(q)
+          assign('area_1',remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch')))
+}
+  },error=function(e){
+    assign('area',remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN'))
+    area$sendKeysToElement(list(key='enter'))
+    Sys.sleep(7)
+    assign('area_1',remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch')))
+    area_1$clickElement()
 
-        start=remDr$findElement(using='xpath',value='//*[@id="startDt"]')
-        end=remDr$findElement(using='xpath',value='//*[@id="endDt"]')
+
+  })
+        }))
+       # }))
+
+   city_n=city_n+1
+
+
+
+      suppressMessages(try(silent = T,{
+        area_2=remDr$findElement(using='css selector',value=paste0('span#ztree_',city,'_check'))
+        while(tryCatch(area_2$clickElement(),error=function(e){1})==1){
+          Sys.sleep(1)
+
+          try(silent = T,{
+          cl=remDr$findElement(using='css selector',value='button.buttonOK')
+          cl$sendKeysToElement(list(key='enter'))
+          })
+
+          area_2=remDr$findElement(using='css selector',value=paste0('span#ztree_',city,'_check'))
+        }
+      }))
+Sys.sleep(1)
+      suppressMessages(try(silent = T,{
+        close0=remDr$findElements(using='class name',value='btn-close')
+        while(tryCatch(      close0[[3]]$clickElement(),error=function(e){1})==1){
+          Sys.sleep(1)
+          try(silent = T,{
+            cl=remDr$findElement(using='css selector',value='button.buttonOK')
+            cl$sendKeysToElement(list(key='enter'))
+          })
+          while(tryCatch(area_2$clickElement(),error=function(e){1})==1){
+            Sys.sleep(1)
+            try(silent = T,{
+              cl=remDr$findElement(using='css selector',value='button.buttonOK')
+              cl$sendKeysToElement(list(key='enter'))
+            })
+            area_2=remDr$findElement(using='css selector',value=paste0('span#ztree_',city,'_check'))
+          }
+          close0=remDr$findElements(using='class name',value='btn-close')
+        }
+      }))
+      start=remDr$findElement(using='xpath',value='//*[@id="startDt"]')
+      end=remDr$findElement(using='xpath',value='//*[@id="endDt"]')
+      tryCatch({
         start$sendKeysToElement(list(paste0(year)))
         end$sendKeysToElement(list(paste0(year)))
-
-        area=remDr$findElement(using='css selector',value='input#btnStn.selectBtn1.btn.btn-primary.VAR3_BTN')
-        area$sendKeysToElement(list(key='enter'))
-        Sys.sleep(2)
-        area_1=remDr$findElement(using='css selector',value=paste0('span#ztree_',citydata2[[city_index]],'_switch'))
-        area_1$clickElement()
-      }
-      )
-      city_n=city_n+1
-
-      Sys.sleep(2)
-      area_2=remDr$findElement(using='css selector',value=paste0('span#ztree_',city,'_check'))
-      area_2$clickElement()
-
-      Sys.sleep(2)
-      close0=remDr$findElements(using='class name',value='btn-close')
-      close0[[3]]$clickElement()
+      },error=function(e){
+        Sys.sleep(1)
+        start$sendKeysToElement(list(paste0(year)))
+        end$sendKeysToElement(list(paste0(year)))
+      })
 
       #set month
       st.mon=remDr$findElement(using='xpath',value='//*[@id="startMt"]')
       ed.mon=remDr$findElement(using='xpath',value='//*[@id="endMt"]')
-
+suppressMessages(
+tryCatch({
       st.mon$sendKeysToElement(list(paste0(start_month)))
       ed.mon$sendKeysToElement(list(paste0(end_month)))
-
+},error=function(e){
+Sys.sleep(2)
+  st.mon=remDr$findElement(using='xpath',value='//*[@id="startMt"]')
+  ed.mon=remDr$findElement(using='xpath',value='//*[@id="endMt"]')
+  st.mon$sendKeysToElement(list(paste0(start_month)))
+  ed.mon$sendKeysToElement(list(paste0(end_month)))
+}))
       #search
-      search=remDr$findElement(using='class name',value='addBtn')
-      remDr$mouseMoveToLocation(webElement = search)
-      search$clickElement()
-      search2=remDr$findElement(using='css selector',value='select#schListCnt.select')
-      search2$sendKeysToElement(list('100'))
+tryCatch({
+  search=remDr$findElement(using='class name',value='addBtn')
+  remDr$mouseMoveToLocation(webElement = search)
+  search$clickElement()
+},error=function(e){
+  Sys.sleep(2)
+  search=remDr$findElement(using='class name',value='addBtn')
+  remDr$mouseMoveToLocation(webElement = search)
+  search$clickElement()
+})
+tryCatch({
+  search2=remDr$findElement(using='css selector',value='select#schListCnt.select')
+  search2$sendKeysToElement(list('100'))
+},error=function(e){
+  Sys.sleep(2)
+  search2=remDr$findElement(using='css selector',value='select#schListCnt.select')
+  search2$sendKeysToElement(list('100'))
+})
       button=NULL
       try(silent = T,{suppressMessages(
         button<<-remDr$findElement(using='css selector',value='button.buttonOK'))
@@ -132,7 +194,8 @@ town_forecast=function(dir,year,city_index,start_month,end_month,
       t=0
       n=as.numeric(remDr$findElement(using='class name',value='SEARCH_LIST_COUNT')$getElementText()[[1]])
       area_list2=NULL;list=list.files(dir,pattern='csv')
-      while(t<n){
+
+while(t<n){
         date=as.character(readHTMLTable(remDr$getPageSource()[[1]])[[2]][seq(1,nrow(readHTMLTable(remDr$getPageSource()[[1]])[[2]]),2),3])
         del=gregexpr(',',as.character(readHTMLTable(remDr$getPageSource()[[1]])[[2]][seq(1,nrow(readHTMLTable(remDr$getPageSource()[[1]])[[2]]),2),2]))
         area_list=substr(as.character(readHTMLTable(remDr$getPageSource()[[1]])[[2]][seq(1,nrow(readHTMLTable(remDr$getPageSource()[[1]])[[2]]),2),2]),
@@ -147,22 +210,26 @@ town_forecast=function(dir,year,city_index,start_month,end_month,
             # if(sum(gsub('.csv','',list.files())%in%paste0(date[i],area_list[i],'_',names(citydata[[city_index]])))!=length(down)){
 
             message(paste0(year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n]))
-            down[[i]]$clickElement()
+          suppressMessages(while(length(tryCatch(down[[i]]$clickElement(),error=function(e){1}))==1){
             Sys.sleep(3)
+           })
+
+            Sys.sleep(2)
             error=NULL
             try(silent = T,{
               suppressMessages(error<-remDr$findElement(using='css selector',value='button'))
               # error=remDr$findElement(using='css selector',value='button')
               error$clickElement()
-
-              if(length(error)==1){down=remDr$findElements(using='css selector',value='input.btn.btn-default.DATA_DOWN_BTN')
-              down[[i]]$clickElement()}
+              if(length(error)==1){
+                down=remDr$findElements(using='css selector',value='input.btn.btn-default.DATA_DOWN_BTN')
+                down[[i]]$clickElement()
+              }
             })
 
-            t=t+1
             close=NULL
-
-            try(silent=T,{suppressMessages(close<-remDr$findElement(using='xpath',value='//*[@name=\"reqstPurposeCd\"]') )
+            Sys.sleep(1)
+            try(silent=T,{
+              suppressMessages(close<-remDr$findElement(using='xpath',value='//*[@name=\"reqstPurposeCd\"]') )
               close$clickElement()
               if(length(close)==1){
                 close2=remDr$findElements(using='css selector',value='input.btn.btn-primary')
@@ -171,10 +238,9 @@ town_forecast=function(dir,year,city_index,start_month,end_month,
                 Sys.sleep(3)
               }
             })
-
-
             write.csv(read.csv(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list))),file=paste0(dir,'/data/',year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n],'.csv'))
             file.remove(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list)))
+            t=t+1
 
           }else t=t+1
 
