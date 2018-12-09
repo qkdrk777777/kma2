@@ -238,7 +238,7 @@ while(t<n){
                 Sys.sleep(3)
               }
             })
-            write.csv(read.csv(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list))),file=paste0(dir,'/data/',year,'/',date[i],area_list[i],'_',names(citydata[[city_index]])[city_n],'.csv'))
+            write.csv(read.csv(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list))),file=paste0(dir,'/data/',year,'/',date[i],gsub('/','_',area_list[i]),'_',names(citydata[[city_index]])[city_n],'.csv'))
             file.remove(paste0(dir,'/',setdiff(list.files(dir,pattern='csv'),list)))
             t=t+1
 
@@ -264,4 +264,3 @@ while(t<n){
 }
 # setwd('D:/package/kma2')
 # devtools::document()
-
