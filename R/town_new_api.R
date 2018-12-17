@@ -29,6 +29,8 @@ data4$hour=(as.numeric(data4[,10]))/100
 
 data4=data4[,c(9,15,16,14,1,2,4:8)]
 colnames(data4)[c(1,4)]=c('date','forecast_value')
+
+data4=data4[,c(1,3,2,4,5,6,11,10,7:9)]
 return(data4)
 }
 
