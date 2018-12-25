@@ -24,7 +24,7 @@ holi=function(start='2017-12-25',end='2018-09-30'){
     eCaps <<- list(
       chromeOptions = list(
         prefs = list("profile.default_content_settings.popups" = port2,
-                     "download.prompt_for_download" = FALSE,"download.default_directory" = dir)
+                     "download.prompt_for_download" = FALSE)
       )
     )
     rD <<- rsDriver(extraCapabilities = eCaps)
