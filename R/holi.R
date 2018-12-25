@@ -3,7 +3,7 @@
 #'
 #' @examples holi(start='2017-12-25',end='2018-09-30')
 #'  @export
-holi=function(start='2017-12-25',end='2018-09-30'){
+holi=function(start='2017-12-25',end='2018-09-30',port1=4565L,port2=4566L){
   dateData=data.frame(date=seq(as.Date(start),as.Date(end),1),week=weekdays(seq(as.Date(start),as.Date(end),1))
                       ,mon=format(seq(as.Date(start),as.Date(end),1),format='%m')
                       ,stringsAsFactors = F)
@@ -18,19 +18,17 @@ holi=function(start='2017-12-25',end='2018-09-30'){
 
   pack2(c('rvest','httr','stringr','RCurl','XML','progress'))
 
-  pJS=NULL
-  try(silent = T,{
-    pJS <<- wdman::phantomjs(port = 4567L)
+    pJS <<- wdman::phantomjs(port = port1)
     eCaps <<- list(
       chromeOptions = list(
-        prefs = list("profile.default_content_settings.popups" = 4566L,
+        prefs = list("profile.default_content_settings.popups" = port2,
                      "download.prompt_for_download" = FALSE)
       )
     )
     rD <<- rsDriver(extraCapabilities = eCaps)
     remDr <<- rD$client
-  })
-  url='https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=%EC%9D%8C%EB%A0%A5%EB%B3%80%ED%99%98&oquery=2000%EB%85%84%EB%8F%84+%EA%B3%B5%ED%9C%B4%EC%9D%BC&tqi=T2TSGspySDwssspb2kossssstuo-354401'
+  remDr$open()
+    url='https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=%EC%9D%8C%EB%A0%A5%EB%B3%80%ED%99%98&oquery=2000%EB%85%84%EB%8F%84+%EA%B3%B5%ED%9C%B4%EC%9D%BC&tqi=T2TSGspySDwssspb2kossssstuo-354401'
   remDr$navigate(url)
   message('Lunar data product')
   pb <- progress_bar$new(total = nrow(dateData))
