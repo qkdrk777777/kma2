@@ -32,7 +32,6 @@ holi=function(start='2017-12-25',end='2018-09-30'){
   })
   # remDr$open()
 
-    })}
   url='https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=%EC%9D%8C%EB%A0%A5%EB%B3%80%ED%99%98&oquery=2000%EB%85%84%EB%8F%84+%EA%B3%B5%ED%9C%B4%EC%9D%BC&tqi=T2TSGspySDwssspb2kossssstuo-354401'
   remDr$navigate(url)
   message('Lunar data product')
